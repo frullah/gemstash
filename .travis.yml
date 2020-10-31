@@ -16,11 +16,9 @@
         - ./ci/build/rvm_setup.sh
         - rm -f ${HOME}/.rvm/gemsets/jruby/global.gems
         - rvm use ${JRUBY_VERSION} --install --binary --fuzzy
-        - gem uninstall bundler -x
-        - gem install bundler -v 1.17.3
-        - bundle _1.17.3_ install --binstubs --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}
-        - bundle _1.17.3 --version
-      script: bundle _1.17.3_ exec rake
+        - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
+        - gem install bundler -v '< 2'
+      script: ./script/run_test.sh
 
 bundler_args: "--binstubs --jobs=3 --retry=3"
 
